@@ -1,7 +1,5 @@
 # Mini-Blog
 
-Repository for backend cohort - Plutonium
-
 ## Blogging Site Mini Project Requirement
 
 ## Phase I
