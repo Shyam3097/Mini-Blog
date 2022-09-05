@@ -1,4 +1,4 @@
-# Mini_Blog
+# Mini-Blog
 
 Repository for backend cohort - Plutonium
 
