@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { boolean } = require("webidl-conversions");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const blogSchema = new mongoose.Schema(
@@ -14,36 +13,33 @@ const blogSchema = new mongoose.Schema(
     },
     authorId: {
       type: ObjectId,
-      ref:"Author",
+      ref: "Author",
       required: true,
     },
-    tags:{
-        type:[]
+    tags: {
+      type: [String],
     },
-    catagory:{
-        type:String,
-        required:true,
+    catagory: {
+      type: String,
+      required: true,
     },
-    subcatagory:{
-        type:[],
+    subcatagory: [String],
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
-    isDeleted:{
-        type:Boolean,
-        default:false
+    publishedAt: {
+      type: Number,
     },
-    publishedAt:{
-        type:Number,
-
+    isPublished: {
+      type: Boolean,
+      default: false,
     },
-    isPublished:{
-        type:Boolean,
-        default:false,
-    }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Blog", blogSchema); //users
+module.exports = mongoose.model("Blog", blogSchema);
 
 // { title: {mandatory}, body: {mandatory}, authorId: {mandatory, refs to author model}, tags: {array of string},
 // category: {string, mandatory, examples: [technology, entertainment, life style, food, fashion]},
