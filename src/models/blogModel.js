@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
-
 const blogSchema = new mongoose.Schema(
   {
     title: {
@@ -19,11 +18,11 @@ const blogSchema = new mongoose.Schema(
     tags: {
       type: [String],
     },
-    catagory: {
+    category: {
       type: String,
       required: true,
     },
-    subcatagory: [String],
+    subcategory: [String],
     isDeleted: {
       type: Boolean,
       default: false,

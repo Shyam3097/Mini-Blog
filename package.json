@@ -1,7 +1,7 @@
 {
-  "name": "mini_blog-",
+  "name": "mini-blog",
   "version": "1.0.0",
-  "description": "mini_blog",
+  "description": "Backend cohort for plutonium(July-Nov)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/Shyam3097/Mini_Blog-.git"
   },
-  "author": "",
+  "author": "Ghanashyam Chhatria, Tushar Gaur, Vishal Bachhao, Hunny",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Shyam3097/Mini_Blog-/issues"
@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.20.0",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.4",
     "nodemon": "^2.0.19"
   }
