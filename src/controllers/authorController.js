@@ -50,7 +50,7 @@ const createAuthor = async function (req, res) {
       return res.status(400).send({ status: false, msg: "password is missing" });
     }
 
-    if (password.length <= 8) {
+    if (password.length < 8) {
       return res
         .status(400)
         .send({ msg: "enter atleast 8 characters in password", status: false });
