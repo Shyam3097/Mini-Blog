@@ -10,13 +10,13 @@ const getToken = async function (req, res) {
   if (!emailId || !pass) {
     res
       .status(400)
-      .send({ msg: "email or password is missing", status: false });
+      .send({ status: false , msg: "email or password is missing"});
   }
 
   let check = await authorModel.findOne({ email: emailId, password: pass });
 
   if (!check) {
-    res.status(401).send({ msg: "Incorrect Id or password", status: false });
+    res.status(401).send({  status: false , msg: "Incorrect Id or password"});
   }
   let token = jwt.sign(
     {
@@ -41,12 +41,12 @@ const authentication = function (req, res, next) {
     let token = req.headers["x-api-key"];
 
     if (!token) {
-      res.status(403).send({ msg: "Token not found", status: false });
+      res.status(403).send({ status: false , msg: "Token not found"});
     }
     let decode = jwt.verify(token, "vishalTusharGhanshyamHunny");
 
     if (!decode) {
-      res.status(403).send({ msg: "Invalid token", status: false });
+      res.status(403).send({ status: false , msg: "Invalid token"});
     }
     next();
   } catch (err) {
@@ -62,7 +62,7 @@ module.exports.authentication = authentication;
 const authorisation = async function (req, res, next) {
   let token = req.headers["x-api-key"];
   if (!token) {
-    res.status(401).send({ msg: "Token not found", status: false });
+    res.status(401).send({ status: false , msg: "Token not found"});
   }
 
   let dataParams = req.params.blogId;
@@ -77,12 +77,12 @@ const authorisation = async function (req, res, next) {
   let decode = jwt.verify(token, "vishalTusharGhanshyamHunny");
 
   if (!decode) {
-    res.status(403).send({ msg: "invalid token", status: false });
+    res.status(403).send({ status: false , msg: "invalid token"});
   }
   let decodedId = decode.user;
 
   if (test != decodedId)
-    return res.status(403).send({ msg: "unauthorised user", status: false });
+    return res.status(403).send({ status: false , msg: "unauthorised user"});
 
   next();
 };
@@ -95,18 +95,18 @@ let auth = async function (req, res, next) {
   let dataQuery = req.query;
   let dQ = await BlogModel.find({ dataQuery }).select({ authorId: 1, _id: 0 });
   if (!dQ) {
-    res.status(403).send({ msg: "not found", status: false });
+    res.status(403).send({ status: false , msg: "not found"});
   }
 
   let token = req.headers["x-api-key"];
   if (!token) {
-    res.status(401).send({ msg: "Token not found", status: false });
+    res.status(401).send({ status: false , msg: "Token not found"});
   }
 
   let decode = jwt.verify(token, "vishalTusharGhanshyamHunny");
 
   if (!decode) {
-    res.status(403).send({ msg: "invalid token", status: false });
+    res.status(403).send({ status: false , msg: "invalid token"});
   }
   let decodedId = decode.user;
 
