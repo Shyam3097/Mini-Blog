@@ -10,35 +10,48 @@ const createAuthor = async function (req, res) {
     //fname validation
     
     if (!fname) {
-      res.status(400).send({ status: false, msg: "please enter firstName " });
+      return res.status(400).send({ status: false, msg: "please enter firstName " });
     }
 
     if (!fname.match(reg)) {
-      res.status(400).send({ status: false, msg: "Accept only Alphabets" });
+      return res.status(400).send({ status: false, msg: "Accept only Alphabets" });
     }
+
     if (fname.length <= 2) {
-      res.status(400).send({ msg: "fname length is too short", status: false });
+      return res.status(400).send({ msg: "fname length is too short", status: false });
     }
 
     //lname validation
+    
+    if (!lname) {
+      return res.status(400).send({ status: false, msg: "please enter lastName " });
+    }
 
     if (!lname.match(reg)) {
-      res.status(400).send({ msg: "Accept only Alphabets", status: false });
+      return res.status(400).send({ msg: "Accept only Alphabets", status: false });
     }
     if (lname.length <= 2) {
-      res.status(400).send({ msg: "lname length is too short", status: false });
+      return res.status(400).send({ msg: "lname length is too short", status: false });
     }
 
     //email validation
 
+    if (!email) {
+      return res.status(400).send({ status: false, msg: "Email is missing" });
+    }
+
     if (!email.match(emailReg)) {
-      res.status(400).send({ msg: "eg. Name@gmail.com", status: false });
+      return res.status(400).send({ msg: "eg. Name@gmail.com", status: false });
     }
 
     //password validation
+    
+    if (!password) {
+      return res.status(400).send({ status: false, msg: "password is missing" });
+    }
 
     if (password.length <= 8) {
-      res
+      return res
         .status(400)
         .send({ msg: "enter atleast 8 characters in password", status: false });
     }
@@ -47,9 +60,9 @@ const createAuthor = async function (req, res) {
 
     let savedData = await authorModel.create(data);
 
-    res.status(201).send({ data: savedData });
+    return res.status(201).send({ data: savedData });
   } catch (err) {
-    res.status(500).send({ msg: "Error", error: "invalid request" });
+    return res.status(500).send({ msg: "Error", error: "invalid request" });
   }
 };
 
