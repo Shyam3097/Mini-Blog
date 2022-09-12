@@ -3,6 +3,15 @@ const isValidReqBody = (el) => {
 };
 
 const trimElement = (stringElement) =>{
+    if(typeof(stringElement) == "object"){
+        const n = stringElement.length;
+        for(let i = 0; i<n; i++){
+            if(stringElement[i].trim() == ""){
+                return true;
+            }
+        }
+        return;
+    }
     return stringElement.trim() == "";
 } 
 

@@ -24,41 +24,37 @@ const createBlog = async function (req, res) {
       isPublished,
     } = data;
 
-
-    
-    
-    
     if (!title || validate.trimElement(title) === true) {
       return res
-      .status(400)
-      .send({ status: false, msg: "Please provide the title" });
+        .status(400)
+        .send({ status: false, msg: "Please provide the title" });
     }
     if (!body || validate.trimElement(body) === true) {
       return res
-      .status(400)
-      .send({ status: false, msg: "Please provide the body" });
+        .status(400)
+        .send({ status: false, msg: "Please provide the body" });
     }
     if (!authorId || validate.trimElement(authorId) === true) {
       return res
-      .status(400)
-      .send({ status: false, msg: "Please provide the authorId" });
+        .status(400)
+        .send({ status: false, msg: "Please provide the authorId" });
     }
     if (mongoose.Types.ObjectId.isValid(data.authorId) === false) {
       return res
-      .status(401)
-      .send({ status: false, msg: "Wrong authorId is bieng provided" });
+        .status(401)
+        .send({ status: false, msg: "Wrong authorId is bieng provided" });
     }
-    if (!tags) {
+    if (!tags || validate.trimElement(tags) === true) {
       return res
-      .status(400)
-      .send({ status: false, msg: "Please provide the tags" });
+        .status(400)
+        .send({ status: false, msg: "Please provide the tags" });
     }
     if (!category || validate.trimElement(category) === true) {
       return res
-      .status(400)
-      .send({ status: false, msg: "Please provide the category" });
+        .status(400)
+        .send({ status: false, msg: "Please provide the category" });
     }
-    
+
     if (isDeleted === true) {
       //if blog is set to deleted true then it will create timestamp
       let deletedAt = new Date();
@@ -82,7 +78,6 @@ const createBlog = async function (req, res) {
 const getBlogs = async (req, res) => {
   try {
     const data = req.query;
-    console.log("data:", data);
     if (!validate.isValidReqBody(data)) {
       return res
         .status(400)
@@ -92,7 +87,6 @@ const getBlogs = async (req, res) => {
       const getBlogsData = await blogModel
         .find(data)
         .find({ isDeleted: false, isPublished: false });
-      console.log("getBlogsData:", getBlogsData);
 
       if (authorId || category || tags || subcategory) {
         if (getBlogsData.length == 0) {
@@ -117,36 +111,37 @@ const getBlogs = async (req, res) => {
 
 const update = async function (req, res) {
   try {
-    let blogIdOfParams = req.params.blogId;
-    let presentBlog = await blogModel.findById(blogIdOfParams);
+    const blogIdData = req.params.blogId;
+    const data = req.body;
+    const { title, body, tags, category, subcategory } = data;
 
-    if (!presentBlog) {
+    const findData = await blogModel.findByIdAndUpdate(
+      { _id: blogIdData },
+      {
+        $addToSet: { tags: tags, subcategory: subcategory },
+        $set: {
+          title: title,
+          body: body,
+          category: category,
+          publishedAt: Date.now(),
+          isPublished: true,
+        },
+      }
+    );
+
+    if (!findData) {
       return res.status(404).send({ status: false, msg: "Blog Not Found" });
     }
-    if (presentBlog.isDeleted == true) {
+
+    if (findData.isDeleted == true) {
       return res
         .status(404)
         .send({ status: false, msg: "Blog already deleted" });
     }
-    let data = req.body;
-    let updatedBlog = await blogModel.find(
-      { _id: blogIdOfParams },
-      {
-        $push: { tags: data.tags, subcategory: data.subcategory },
-        $set: {
-          title: title,
-          body: body,
-          publishedAt: Date.now(),
-          isPublished: true,
-        },
-      },
-      { new: true }
-    );
-    console.log("updatedBlog:", updatedBlog);
 
     return res.status(200).send({ status: true, data: updatedBlog });
   } catch (err) {
-    res.status(500).send({ status: false, msg: err.message });
+    res.status(400).send({ status: "Failed to update", msg: err.message });
   }
 };
 
@@ -165,6 +160,7 @@ const deleteData = async function (req, res) {
       return res
         .status(404)
         .send({ status: false, msg: "This Blog is already deleted" });
+
     res
       .status(200)
       .send({ status: true, msg: "You delete the blog successfully" });
