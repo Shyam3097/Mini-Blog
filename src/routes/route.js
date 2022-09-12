@@ -8,7 +8,7 @@ const middleware = require("../middlewares/auth")
 
 router.post("/createAuthor", authorController.createAuthor)
 router.post("/login",middleware.getToken);
-router.post("/createBlog",middleware.authentication,middleware.authorisation, blogController.createBlog)
+router.post("/createBlog",middleware.authentication, blogController.createBlog)
 
 router.get("/getBlogs",middleware.authentication, blogController.getBlogs)
 router.put("/update/:blogId",middleware.authentication,middleware.authorisation,blogController.update);
